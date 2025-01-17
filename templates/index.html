@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Quản Lý</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Hàm lấy dữ liệu MQTT từ server mỗi 1 giây
+        function fetchMqttData() {
+            $.get("/get_mqtt_data", function(data) {
+                // Cập nhật các giá trị từ dữ liệu MQTT
+                $("#date").text(data.date);
+                $("#time").text(data.time);
+                $("#data").text(data.data);
+            });
+        }
+
+        // Lấy dữ liệu MQTT mỗi 1 giây
+        setInterval(fetchMqttData, 1000); // Gọi fetchMqttData mỗi 1 giây
+    </script>
+</head>
+<body>
+    <h1>Trang thái của MQTT</h1>
+    <p><strong>Ngày:</strong> <span id="date">{{ mqtt_data['date'] }}</span></p>
+    <p><strong>Giờ:</strong> <span id="time">{{ mqtt_data['time'] }}</span></p>
+    <p><strong>Trạng thái:</strong> <span id="data">{{ mqtt_data['data'] }}</span></p>
+
+    <form method="POST">
+        <label for="status">Cập nhật trạng thái:</label>
+        <input type="text" id="status" name="status" required>
+        <button type="submit">Cập nhật</button>
+    </form>
+
+    <p><strong>{{ updated_status }}</strong></p>
+</body>
+</html>
